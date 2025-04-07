@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Should I Text My Ex?</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#fbc2eb">
+  <link rel="icon" href="https://fav.farm/💔" type="image/png"/>
+  <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/1077/1077035.png" />
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <style>
+    :root {
+      --bg-color: linear-gradient(135deg, #2C3E50, #4CA1AF);
+      --text-color: white;
+      --btn-color: #ff4e91;
+      --btn-hover: #ff76a5;
+      --card-bg: rgba(255, 255, 255, 0.2);
+    }
+
+    body.light {
+      background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
+      color: #000;
+    }
+
+    body {
+      background: var(--bg-color);
+      color: var(--text-color);
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      text-align: center;
+      padding: 2rem;
+      transition: all 0.4s ease;
+    }
+
+    h1 {
+      font-family: 'Bangers', cursive;
+      font-size: 3rem;
+      background: linear-gradient(to right, #ff6ec4, #7873f5);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 2rem;
+    }
+
+    button {
+      padding: 1rem 2rem;
+      background-color: var(--btn-color);
+      color: white;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 0.2s, background-color 0.2s, box-shadow 0.3s ease;
+      margin: 0.5rem;
+      box-shadow: 0 0 0px rgba(255, 255, 255, 0.4);
+    }
+
+    button:hover {
+      background-color: var(--btn-hover);
+      transform: scale(1.05);
+      box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.3);
+    }
+
+    #answer {
+      font-size: 1.5rem;
+      margin-top: 20px;
+      animation: fadeInUp 0.5s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    #meme {
+      margin-top: 20px;
+      width: 100%;
+      max-width: 400px;
+      height: auto;
+      border-radius: 20px;
+      box-shadow: 0px 0px 15px var(--card-bg);
+    }
+
+    #shareButtons {
+      margin-top: 30px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .share-button {
+      background-color: #1da1f2;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 1rem;
+    }
+
+    .share-button.whatsapp { background-color: #25D366; }
+    .share-button.instagram { background-color: #E1306C; }
+    #uncrossedBtn { background-color: #8a2be2; }
+
+    #backBtn {
+      text-decoration: none;
+      background-color: #333;
+      color: white;
+      padding: 0.6rem 1.2rem;
+      border-radius: 10px;
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      font-weight: 600;
+    }
+
+    #modeToggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: #222;
+    }
+
+    footer {
+      position: fixed;
+      bottom: 10px;
+      font-size: 0.9rem;
+      color: #de09e7;
+      opacity: 0.7;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: 0.5px;
+    }
+
+    @media (max-width: 600px) {
+      button {
+        font-size: 1rem;
+        padding: 0.8rem 1.5rem;
+      }
+      h1 { font-size: 2rem; }
+    }
+  </style>
+</head>
+
+<body class="light">
+  <a id="backBtn" href="index.html">← Back</a>
+  <button id="modeToggle" onclick="toggleMode()">🌞</button>
+
+  <h1>Should I Text My Ex?</h1>
+
+  <button id="askBtn" onclick="getAnswer()">Ask the Universe 💫</button>
+  <button id="uncrossedBtn" onclick="readUncrossedPaths()">Read Uncrossed Paths 📖</button>
+
+  <div id="answer"></div>
+  <img id="meme" src="" alt="Meme" loading="lazy" style="display: none;">
+  <div id="shareButtons" style="display:none;">
+    <a id="whatsappBtn" class="share-button whatsapp" href="#" target="_blank">Share on WhatsApp</a>
+    <a id="twitterBtn" class="share-button" href="#" target="_blank">Share on X (Twitter)</a>
+    <a id="instagramBtn" class="share-button instagram" href="https://www.instagram.com/" target="_blank">Post on Instagram Story</a>
+  </div>
+
+  <audio id="sadSong" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"></audio>
+  <audio id="partySong" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3"></audio>
+  <audio id="confettiSound" src="https://www.fesliyanstudios.com/play-mp3/387" preload="auto"></audio>
+
+  <script>
+    let count = 0;
+    let uncrossedVisible = true;
+
+    const messages = [
+      "NO. Go drink water.",
+      "Nope. Focus on yourself.",
+      "Still no. Move on, king/queen 👑",
+      "Hell no. They’re not even thinking about you.",
+      "NO. But maybe block them?",
+      "Do pushups instead.",
+      "Absolutely not. Touch grass 🌱",
+      "You deserve better. Trust me.",
+      "NO. Watch anime instead.",
+      "Okay... maybe 👀",
+      "Text your ex? Might as well text your electricity bill too, both will leave you broke.",
+      "You texting your ex is like reinstalling TikTok during exams — a terrible idea.",
+      "Texting your ex? Bro even ChatGPT has better memory than them.",
+      "You're trying to fix a cracked phone screen with Fevicol energy. Chill.",
+      "They ghosted you harder than your math teacher's feedback.",
+      "Text your ex? Even your panipuri wala has more consistency than them.",
+      "Tujhe ex yaad aa raha hai, aur woh kisi aur ke saath insta story daal raha hai.",
+      "Unko text karega? Bhai unhone toh tere naam ka spelling bhi bhool gaya hai.",
+      "Wapas jaake kya karega? Wahi purani rotis garam?"
+    ];
+
+    const memes = [
+      "https://indianmemetemplates.com/wp-content/uploads/I-saved-you-from-cringe-again-1024x704.jpg",
+      "https://indianmemetemplates.com/wp-content/uploads/rohit-sharma-holding-dinesh-karthiks-mouth-1024x582.jpg",
+      "https://indianmemetemplates.com/wp-content/uploads/Bhag-ja-yaha-se-yaha-kuch-nahi-milega-1022x1024.jpg",
+      "https://indianmemetemplates.com/wp-content/uploads/Are-you-comedy-me.jpg",
+      "https://indianmemetemplates.com/wp-content/uploads/Ranveer-Allahbadia-Reaction-1024x575.jpg",
+      "https://indianmemetemplates.com/wp-content/uploads/excuse-me-brother-brother-idhar.jpg",
+      "https://indianmemetemplates.com/wp-content/uploads/Yaar-aise-game-me-cheating-hogi-to-mai-nahi-khelunga-1024x575.jpg",
+    ];
+
+    function getAnswer() {
+      count++;
+      const answerDiv = document.getElementById("answer");
+      const memeImg = document.getElementById("meme");
+      const shareDiv = document.getElementById("shareButtons");
+      const whatsappBtn = document.getElementById("whatsappBtn");
+      const twitterBtn = document.getElementById("twitterBtn");
+      const sadSong = document.getElementById("sadSong");
+      const partySong = document.getElementById("partySong");
+      const confettiSound = document.getElementById("confettiSound");
+      const uncrossedBtn = document.getElementById("uncrossedBtn");
+
+      sadSong.pause(); sadSong.currentTime = 0;
+      partySong.pause(); partySong.currentTime = 0;
+      confettiSound.pause(); confettiSound.currentTime = 0;
+
+      if (count === 1 && uncrossedVisible) {
+        uncrossedBtn.style.display = 'none';
+        uncrossedVisible = false;
+      }
+
+      if (count === 5) {
+        window.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "_blank");
+      }
+
+      answerDiv.innerHTML = "Asking the universe... 🌌";
+      memeImg.style.display = "none";
+      shareDiv.style.display = "none";
+
+      setTimeout(() => {
+        let answer = "";
+        if (count % 10 === 0) {
+          answer = "Ok fine... but first do 50 squats. You’ll forget them by the end 💀";
+          sadSong.play();
+          confetti();
+          confettiSound.play();
+        } else {
+          answer = messages[Math.floor(Math.random() * messages.length)];
+          partySong.play();
+        }
+
+        const randomMeme = memes[Math.floor(Math.random() * memes.length)];
+        answerDiv.textContent = answer;
+        memeImg.src = randomMeme;
+        memeImg.style.display = "block";
+        shareDiv.style.display = "flex";
+
+        const encodedAnswer = encodeURIComponent(answer);
+        const encodedURL = encodeURIComponent(window.location.href);
+        whatsappBtn.href = `https://api.whatsapp.com/send?text=${encodedAnswer}%20-%20${encodedURL}`;
+        twitterBtn.href = `https://twitter.com/intent/tweet?text=${encodedAnswer}&url=${encodedURL}`;
+      }, 1000);
+    }
+
+    function readUncrossedPaths() {
+      window.open("https://www.wattpad.com/story/388652994-uncrossed-paths", "_blank");
+    }
+
+    function toggleMode() {
+      const body = document.body;
+      body.classList.toggle('light');
+      document.getElementById('modeToggle').textContent = body.classList.contains('light') ? '🌞' : '🌙';
+    }
+  </script>
+
+  <footer>✨ Created by Rash</footer>
+</body>
+</html>
